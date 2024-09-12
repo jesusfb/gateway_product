@@ -1,0 +1,38 @@
+version: '3.4'
+
+services:
+  productservice:
+    build:
+      context: .
+      dockerfile: ProductService/Dockerfile
+    ports:
+      - "8001:80"
+    networks:
+      - mynetwork
+
+  orderservice:
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
+    ports:
+      - "8002:80"
+- 
+
+    networks:
+      - mynetwork
+
+  apigateway:
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    ports:
+      - "5000:80"
+    depends_on:
+      - productservice
+      - orderservice
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
